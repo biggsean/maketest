@@ -5,11 +5,12 @@ ACTIVATE=source ~/.venv-ansible-$(ANSIBLE_VERSION)/bin/activate
 
 .PHONY: version
 version: create_venv
-	$(ACTIVATE) && ansible --version
+	$(ACTIVATE) && ansible --version | tee somfile
 
 .PHONY: test
 test: version create_venv
-	echo DONE
+	echo DONE $(ANSIBLE_VERSION) >> somefile
+	cat somefile
 
 .PHONY: create_venv
 create_venv: install_virtualenv
