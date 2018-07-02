@@ -1,0 +1,82 @@
+---
+- hosts: cd
+  become: yes
+
+  tasks:
+    - name: ensure epel is installed
+      package:
+        name: epel-release
+        state: present
+
+    - name: ensure molecule dependencies are installed
+      package:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - gcc
+        - python-pip
+        - python-devel
+        - libselinux-python
+        - openssl-devel
+        - docker
+
+    - name: ensure docker group exists
+      group:
+        name: docker
+        state: present
+
+    - name: ensure vagrant is in the docker group
+      user:
+        name: vagrant
+        append: yes
+        groups: docker
+
+    - name: ensure docker is running and enabled
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: ensure virtualenv is installed
+      pip:
+        name: virtualenv
+        state: present
+
+    - name: ensure ansible is installed in the virtualenv
+      pip:
+        name: ansible
+        state: present
+        version: 2.5.0
+        virtualenv: /home/vagrant/.venv
+        virtualenv_site_packages: no
+        virtualenv_python: python2.7
+      become_user: vagrant
+
+    - name: ensure molecule and dependencies are installed
+      pip:
+        name: "{{ item }}"
+        state: present
+        virtualenv: /home/vagrant/.venv
+        virtualenv_site_packages: no
+        virtualenv_python: python2.7
+      become_user: vagrant
+      with_items:
+        - molecule
+        - boto
+        - boto3
+        - docker-py
+
+    - name: ensure libselinux is available in venv
+      file:
+        path: /home/vagrant/.venv/lib/python2.7/site-packages/selinux
+        src: /usr/lib64/python2.7/site-packages/selinux
+        state: link
+      become_user: vagrant
+
+    - name: ensure vagrant profile is set up
+      lineinfile:
+        path: /home/vagrant/.bash_profile
+        line: "{{ item }}"
+      with_items:
+        - 'export AWS_DEFAULT_REGION=us-east-1'
+        - 'source ~/.venv/bin/activate'

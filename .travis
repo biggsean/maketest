@@ -1,0 +1,10 @@
+---
+sudo: required
+
+env:
+  matrix:
+    - ANSIBLE_VERSION: 2.5.0
+    - ANSIBLE_VERSION: 2.5.1
+
+script:
+  - make test
