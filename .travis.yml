@@ -9,7 +9,7 @@ env:
     - ANSIBLE_VERSION=2.5.1 SCENARIO=scenario-foo
 
 install:
-  - bootstrap.sh
+  - bash bootstrap.sh
 
 script:
   - make test
