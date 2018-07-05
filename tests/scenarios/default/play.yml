@@ -1,0 +1,12 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  roles:
+    - role: "{{ lookup('env','PWD')|basename }}"
+
+  tasks:
+    - name: Do something for now
+      assert:
+        that: true
+

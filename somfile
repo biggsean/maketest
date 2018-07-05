@@ -1,0 +1,6 @@
+ansible 2.5.0
+  config file = /vagrant/ansible.cfg
+  configured module search path = [u'/home/vagrant/.ansible/plugins/modules', u'/usr/share/ansible/plugins/modules']
+  ansible python module location = /home/vagrant/.venv-ansible-2.5.0/local/lib/python2.7/site-packages/ansible
+  executable location = /home/vagrant/.venv-ansible-2.5.0/bin/ansible
+  python version = 2.7.6 (default, Oct 26 2016, 20:30:19) [GCC 4.8.4]
